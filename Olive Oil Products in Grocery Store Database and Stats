@@ -1,0 +1,28 @@
+--Create a grocery store database; olive oil section
+
+CREATE TABLE olive_oil (id INTEGER PRIMARY KEY, name TEXT, price INTEGER, amount INTEGER, discount TEXT, expiration INTEGER);
+
+INSERT into olive_oil values (1, 'Sicilian', '32', '10', 'NO','52025');
+INSERT into olive_oil values (2, 'Portuguese', '32', '10', 'NO', '52025');
+INSERT into olive_oil values (3, 'Athenian', '15', '17', 'YES','072023');
+INSERT into olive_oil values (4, "South African", '12', '20', 'YES', '72023');
+INSERT into olive_oil values (5, 'Australian', '12', '20', 'NO', '72023');
+INSERT into olive_oil values (6, 'Cretan', '32', '33', 'NO', '52025');
+INSERT into olive_oil values (7, 'Californian', '9', '23', 'NO', '52022');
+INSERT into olive_oil values (8, 'Floridian', '12', '20', 'NO', '072022');
+INSERT into olive_oil values (9, 'Egyptian', '20', '12', 'NO', '052025');
+INSERT into olive_oil values (10, 'Pugliese', '32', '32',"NO", "052025");
+INSERT into olive_oil values (11, 'Algarvan', '32', '33', 'NO', '052022');
+INSERT into olive_oil values (12, 'Picual', '20', '12', 'YES', '052022');
+INSERT into olive_oil values (13, 'Frantoio', '32', '33', 'NO', '072057');
+INSERT into olive_oil values (14, 'French', '21', '13', 'NO', '072057');
+INSERT into olive_oil values (15, 'Coratina', '32', '33', 'NO', '072057');
+
+--Display the database ordered by price in excess of $20
+SELECT * from olive_oil where price > 20 order by id;
+
+-What is the avg of all the prices of the olive oil?
+SELECT avg (price) from olive_oil group by price;
+
+--What is the sum of all prices for discounted olive oils? 
+SELECT SUM (price) FROM olive_oil where discount='YES'; 

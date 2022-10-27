@@ -1,0 +1,70 @@
+# For this project, I downloaded Spotify data from Kaggle.
+# Then I created a table to insert Spotify data into.
+# Finally, I performed analytics on the data using SQL. 
+
+#Creating the table: 
+CREATE TABLE BIT_DB.Spotifydata (
+id integer PRIMARY KEY,
+artist_name varchar NOT NULL,
+track_name varchar NOT NULL,
+track_id varchar NOT NULL,
+popularity integer NOT NULL,
+danceability decimal(4,3) NOT NULL,
+energy decimal(4,3) NOT NULL,
+key integer NOT NULL,
+loudness decimal(5,3) NOT NULL,
+mode integer NOT NULL,
+speechiness decimal(5,4) NOT NULL,
+acousticness decimal(6,5) NOT NULL,
+instrumentalness text NOT NULL,
+liveness decimal(5,4) NOT NULL,
+valence decimal(4,3) NOT NULL,
+tempo decimal(6,3) NOT NULL,
+duration_ms integer NOT NULL,
+time_signature integer NOT NULL 
+)
+
+#Then I inserted the Spotify Data .csv into the table.
+
+#Next, I explored the data using the following SQL. 
+
+#First I determined the average popularity, danceability, and energy by artist and track. 
+SELECT
+artist_name
+,track_name
+,avg(popularity)
+,avg(danceability)
+,avg(energy)
+FROM BIT_DB.spotifydata
+GROUP BY artist_name, track_name
+
+#I also determined who the Top 10 artists are by popularity.
+SELECT track_name, artist_name, popularity
+FROM BIT_DB.spotifydata
+ORDER BY popularity desc
+LIMIT 10
+
+#I then wanted to see if there might be a relationship between tempo and chart ranking.
+select id, popularity, artist_name, track_name, CAST(tempo as int) from bit_db.spotifydata order by length(id);
+
+#Since chart ranking and popularity are different metrics, I also wanted to see the relationship between popularity and tempo. 
+SELECT popularity, artist_name, track_name, CAST(tempo as int) FROM BIT_DB.spotifydata ORDER BY popularity desc;
+
+#I also devised a way to look at the *amount* of songs that fell within each of the classical tempo classifications.
+SELECT count(id),
+    CASE 
+    WHEN CAST(tempo as int) between 40 and 60 THEN "largo"
+    WHEN CAST(tempo as int) between 61 and 76 THEN "adagio"
+    WHEN CAST(tempo as int) between 77 and 108 THEN "andante"
+    WHEN CAST(tempo as int) between 109 and 120 THEN "moderato"
+    WHEN CAST(tempo as int) between 121 and 168 THEN "allegro"
+    WHEN CAST(tempo as int) between 169 and 200 THEN "presto"
+    END as "tempo_classification"
+FROM bit_db.spotifydata
+GROUP BY tempo_classification;
+
+#I wanted to also see the proportion of songs that could be classified as being in either a major or minor key.
+Select mode, COUNT(mode)as kount from BIT_DB.Spotifydata
+group by mode;
+
+

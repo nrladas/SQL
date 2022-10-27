@@ -39,16 +39,29 @@ FROM BIT_DB.spotifydata
 GROUP BY artist_name, track_name
 
 #I also determined who the Top 10 artists are by popularity.
-SELECT track_name, artist_name, popularity
+SELECT track_name
+,artist_name
+,popularity
 FROM BIT_DB.spotifydata
 ORDER BY popularity desc
-LIMIT 10
+LIMIT 10;
 
 #I then wanted to see if there might be a relationship between tempo and chart ranking.
-select id, popularity, artist_name, track_name, CAST(tempo as int) from bit_db.spotifydata order by length(id);
+SELECT id
+,popularity
+,artist_name
+,track_name
+,CAST(tempo as int) 
+FROM BIT_DB.Spotifydata 
+ORDER BY length(id);
 
 #Since chart ranking and popularity are different metrics, I also wanted to see the relationship between popularity and tempo. 
-SELECT popularity, artist_name, track_name, CAST(tempo as int) FROM BIT_DB.spotifydata ORDER BY popularity desc;
+SELECT popularity
+,artist_name
+,track_name
+,CAST(tempo as int)
+FROM BIT_DB.Spotifydata
+ORDER BY popularity desc;
 
 #I also devised a way to look at the *amount* of songs that fell within each of the classical tempo classifications.
 SELECT count(id),
@@ -60,11 +73,35 @@ SELECT count(id),
     WHEN CAST(tempo as int) between 121 and 168 THEN "allegro"
     WHEN CAST(tempo as int) between 169 and 200 THEN "presto"
     END as "tempo_classification"
-FROM bit_db.spotifydata
+FROM BIT_DB.Spotifydata
 GROUP BY tempo_classification;
 
-#I wanted to also see the proportion of songs that could be classified as being in either a major or minor key.
-Select mode, COUNT(mode)as kount from BIT_DB.Spotifydata
-group by mode;
+#I wanted to also see the proportion of songs that could be classified as being in either a major(0) or minor(1) tonality.
+SELECT mode
+,COUNT(mode)as total_songs
+FROM BIT_DB.Spotifydata
+GROUP BY mode;
 
+#I devised a way to look at the amount of songs that were written in each of the 12 possible keys.
+Select count(id)
+,key
+FROM BIT_DB.Spotifydata 
+GROUP BY key
+ORDER BY count(id) asc;
+
+#I determined the number of times each artist appeared in the charts. 
+SELECT artist_name
+,count(artist_name) as frequency
+FROM BIT_DB.Spotifydata
+GROUP BY artist_name
+ORDER BY frequency desc;
+
+#I also wanted to see whether there was a relationship between song length, popularity, and ranking. 
+SELECT artist_name
+,track_name
+,duration_ms
+,id
+,popularity
+FROM BIT_DB.Spotifydata
+ORDER BY duration_ms desc;
 

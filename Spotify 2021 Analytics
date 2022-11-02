@@ -105,3 +105,11 @@ SELECT artist_name
 FROM BIT_DB.Spotifydata
 ORDER BY duration_ms desc;
 
+#I then determined the top 10 artists by average popularity.
+WITH pop_avg_CTE AS (
+Select s.artist_name, avg(s.popularity) as avg_pop
+FROM Spotifydata s
+GROUP BY s.artist_name)
+SELECT artist_name, avg_pop, 'TOP STAR' as tag
+FROM pop_avg_CTE
+WHERE avg_pop>=90;
